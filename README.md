@@ -1,203 +1,207 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 JustCoded RBAC extension</h1>
-    <br>
-</p>
+# Yii 2 JustCoded RBAC Extension (Forked)
 
-Extended RBAC Manager with route-based access.
+[![Yii2](https://avatars0.githubusercontent.com/u/993323)](https://github.com/yiisoft)
 
-### Features
+This is a fork of the Yii 2 RBAC extension by JustCoded. It extends the RBAC Manager with a route-based access control
+system, offering additional features and compatibility with modern PHP versions.
 
-#### Pre-defined Roles and Permissions
+---
 
-By default this extension init such roles and permissions:
+## Features
 
-__Permissions:__
+### Pre-defined Roles and Permissions
 
-* __\*__ - master permission. parent of all other permissions
-* __administer__ - permission you may use to check access to admin panel
+The extension provides the following pre-defined roles and permissions:
 
-__Roles:__
+**Permissions:**
 
-* __Guest__ - not authenticated user
-* __Authenticated__ - authenticated user (you will need to add it by yourself you users)
-* __Administrator__ - has `administer` permission, so has access to admin panel
-* __Master__ - has `*` permission, super user with access to everything
+- **`*` (master permission)**: A parent permission for all other permissions.
+- **`administer`**: Permission to check access to the admin panel.
 
-#### Routes Scanner
+**Roles:**
 
-Special console command (or GUI interface) has feature to scan your project files and import permissions like:
+- **`Guest`**: Not authenticated users.
+- **`Authenticated`**: Authenticated users (add this to your users manually).
+- **`Administrator`**: Users with `administer` permission, granting access to the admin panel.
+- **`Master`**: Superuser role with access to everything via `*` permission.
 
-* {controller->uniqueId}/*
-* {controller->uniqueId}/{action->id}
+---
 
-You can create additional roles (or add permissions to existed roles) to configure your system high-level access.
+### Routes Scanner
 
-#### Routes Access filter
+The extension includes a feature to scan your project files and automatically import permissions for:
 
-Most popular thing in RBAC configuration is to close access to some parts of the site (logged in area,
-different user roles, admin area, etc.).
+- **Controller-wide permissions**: `{controller->uniqueId}/*`
+- **Action-specific permissions**: `{controller->uniqueId}/{action->id}`
 
-Extension provides filter very similar to standard AccessControl which check `{controller->uniqueId}/*`,
-`{controller->uniqueId}/{action->id}` permission on page load and throw 403 error if you're not allowed
-to access routes.
+You can create or assign roles and permissions to configure your application's high-level access control.
 
-#### GUI
+---
 
-Simple GUI* interface to manage your roles and permissions.
+### Route Access Filter
 
-> **Note:** GUI still has alpha version features. Don't share access to this GUI to your clients!
+Easily restrict access to specific parts of your site based on roles or permissions. The extension provides a filter
+similar to Yii's `AccessControl`, enabling route-based permissions checks. If access is denied, a `403 Forbidden` error
+is triggered.
 
-### Installation
+---
 
-The preferred way to install this extension is through composer.
+### GUI for Managing Roles and Permissions
 
-Either run
+A simple GUI is included to manage roles and permissions directly from the application.
+
+> **Note:** The GUI is in alpha. Avoid sharing access to this interface with end-users.
+
+---
+
+## Installation
+
+Install the extension via Composer:
 
 ```bash
-php composer.phar require --prefer-dist deadmantfa/yii2-rbac "*"
+composer require deadmantfa/yii2-rbac
 ```
 
-or add
+Alternatively, add the following to your `composer.json`:
 
-```
+```json
 "deadmantfa/yii2-rbac": "*"
 ```
 
-to the require section of your composer.json.
+---
 
-### Configuration
+## Configuration
 
-#### Component Setup
+### Component Setup
 
-To use the RBAC extension, you need to configure the components array in your application configuration:
+Add the RBAC module and `authManager` configuration in your application:
 
 ```php
 'modules' => [
-	...
-	'rbac' => [
-		'class' => 'deadmantfa\yii2\rbac\Module'
-	],
-	...
+    'rbac' => [
+        'class' => 'deadmantfa\yii2\rbac\Module',
+    ],
 ],
 'components' => [
-	...
-	'authManager' => [
-		'class' => 'deadmantfa\yii2\rbac\components\DbManager',
-		//'class' => 'deadmantfa\yii2\rbac\components\PhpManager',
-	],
-	...
+    'authManager' => [
+        'class' => 'deadmantfa\yii2\rbac\components\DbManager',
+        //'class' => 'deadmantfa\yii2\rbac\components\PhpManager',
+    ],
 ],
 ```
 
-##### Bootstrap4 Themes Support
+---
 
-By default all views use standard yii2-bootstrap package with Boostrap v3.
-If you use modern Bootstrap 4, then you can overwrite some classes to use yii2-bootstrap4
-package instead. Inside your configuration you need to reconfigure container dependencies like
-this:
+### Bootstrap 4 Themes Support
+
+By default, the views use Bootstrap 3 via `yii2-bootstrap`. For Bootstrap 4 support, update the container configuration:
 
 ```php
 'container' => [
-	'definitions' => [
-		// you can create your own GrivView to customize all options for main roles and permissions lists.
-		'deadmantfa\yii2\rbac\widgets\RbacGridView' => [
-			'class' => \app\modules\admin\widgets\RbacGridView::class,
-		],
-		// this will replace bootstrap3 ActiveForm with bootstrap4 ActiveForm.
-		'deadmantfa\yii2\rbac\widgets\RbacActiveForm' => [
-			'class' => \yii\bootstrap4\ActiveForm::class,
-		],
-	],
+    'definitions' => [
+        'deadmantfa\yii2\rbac\widgets\RbacGridView' => [
+            'class' => \app\modules\admin\widgets\RbacGridView::class,
+        ],
+        'deadmantfa\yii2\rbac\widgets\RbacActiveForm' => [
+            'class' => \yii\bootstrap4\ActiveForm::class,
+        ],
+    ],
 ],
-``` 
+```
 
-* Note: you need to add `yiisoft/yii2-bootstrap4` package dependency manually in your `composer.json`.
+> **Note:** Add `yiisoft/yii2-bootstrap4` to your `composer.json`.
 
-#### Basic RBAC configuration
+---
 
-Please
-follow [oficial documentation](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#configuring-rbac)
-to configure RBAC storage (create necessary files or database tables).
+### Basic RBAC Configuration
 
-If you use DbManager you can init database tables with the following migration command:
+Follow
+the [official Yii 2 RBAC documentation](https://www.yiiframework.com/doc-2.0/guide-security-authorization.html#configuring-rbac)
+to configure RBAC storage (e.g., create necessary files or database tables).
+
+For `DbManager`, initialize the database tables with the following migration command:
 
 ```bash
 yii migrate --migrationPath=@yii/rbac/migrations
 ```
 
-#### Init base roles
+---
 
-Before usage this extension you will need to init default roles, which are pre-defined for it.
+### Initialize Base Roles
 
-To do that you will need to run several commands:
+Run the following commands to set up default roles and permissions:
 
 ```bash
-# init base roles and administer/master permission 
+# Initialize base roles and permissions
 php yii rbac/init
 
-# assign master role to some user (in this case user with ID = 1)
+# Assign the master role to a user (replace 1 with the user ID)
 php yii rbac/assign-master 1
 
-# scan your application routes
+# Scan application routes for permissions
 php yii rbac/scan
+```
 
-# ADVANCED TEMPLATE ONLY: scan routes for rbac module.
+For **Advanced Template**:
+
+```bash
 php yii rbac/scan -p='@vendor/deadmantfa/yii2-rbac' -b='rbac/'
+```
 
-# BASIC TEMPLATE ONLY: in case you use 'admin' module for backend:
+For **Basic Template**:
+
+```bash
 php yii rbac/scan -p='@vendor/deadmantfa/yii2-rbac' -b='admin/rbac/'
 ```
 
-### Usage
+---
 
-#### GUI interface
+## Usage
 
-To use graphical interface just follow the route you specified as base when scan routes / configure module.
+### GUI Interface
 
-> **Note:** Role Permissions selector is a hotfix solution, so it doesn't display proper tree structure when
-> you move items between boxes.
-> This will be fixed in next versions.
+Access the RBAC GUI by navigating to the module's configured route. Use the GUI to manage roles and permissions.
 
-#### Route Access filter
+> **Note:** The role-permission selector is a temporary solution and may not display a proper tree structure. This will
+> be addressed in future updates.
 
-RouteAccessControl filter can be used inside specific controller (or globally) to control access to
-controller actions on very high level.
+---
 
-Routes scanner insert permissions like:
+### Route Access Filter
 
-{controller->uniqueId}/*
-{controller->uniqueId}/{action->id}
+Use the `RouteAccessControl` filter to enforce route-based access control. The filter checks permissions during each
+request and throws a `403 Forbidden` error for unauthorized routes.
 
-On controller beforeAction this filter check that current logged in user has permissions to access these routes.
-
-To enable filter inside some specific controller:
+#### Per Controller
 
 ```php
-	public function actions()
-	{
-		return [
-			'routeAccess' => [
-				'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
-			],
-		];
-	}
+public function behaviors()
+{
+    return [
+        'routeAccess' => [
+            'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
+        ],
+    ];
+}
 ```
 
-Or you can configure this filter globally. Inside you current application config just add such section:
+#### Globally
 
 ```php
-	'as routeAccess' => [
-		'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
-		'allowActions' => [
-			'site/*',
-		],
-		'allowRegexp' => '/(gii)/i', // optional
-	],
+'as routeAccess' => [
+    'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
+    'allowActions' => [
+        'site/*',
+    ],
+    'allowRegexp' => '/(gii)/i', // Optional
+],
 ```
 
-### Example
+---
 
-You can check the example on our [Yii2 starter kit](https://github.com/justcoded/yii2-starter).
+## Example Project
+
+You can see an example of this RBAC extension in action in
+the [Yii2 Starter Kit](https://github.com/justcoded/yii2-starter).
+
+---
