@@ -1,9 +1,13 @@
 <?php
-/* @var $this \yii\web\View */
-/* @var $model \justcoded\yii2\rbac\forms\ScanForm */
+/* @var $this View */
+/* @var $model ScanForm */
 
-use justcoded\yii2\rbac\widgets\RbacActiveForm;
+declare(strict_types=1);
+
+use deadmantfa\yii2\rbac\forms\ScanForm;
+use deadmantfa\yii2\rbac\widgets\RbacActiveForm;
 use yii\helpers\Html;
+use yii\web\View;
 
 $this->title = 'Scan Routes Permissions';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['permissions/']];
@@ -13,28 +17,28 @@ $this->params['subheading'] = 'Scan routes';
 ?>
 
 <div class="row">
-	<div class="col-md-8 col-sm-12">
-		<?php $form = RbacActiveForm::begin(); ?>
-		<div class="panel box card scan-routes">
-			<div class="panel-body box-body card-body">
-				<p>You can scan your controllers to find routes and create permissions for them automatically.</p>
-				<p>Please note, that for permission names we use a path of Controller Unique ID and Action ID,
-					not friendly URLs (specified inside UrlManager configuration).</p>
+    <div class="col-md-8 col-sm-12">
+        <?php $form = RbacActiveForm::begin([]); ?>
+        <div class="panel box card scan-routes">
+            <div class="panel-body box-body card-body">
+                <p>You can scan your controllers to find routes and create permissions for them automatically.</p>
+                <p>Please note, that for permission names we use a path of Controller Unique ID and Action ID,
+                    not friendly URLs (specified inside UrlManager configuration).</p>
 
-				<?= $form->field($model, 'path')->textInput(['maxlength' => true, 'placeholder' => 'Ex.: @app']) ?>
+                <?= $form->field($model, 'path')->textInput(['maxlength' => true, 'placeholder' => 'Ex.: @app']) ?>
 
-				<?= $form->field($model, 'ignorePath')->textInput([
-					'value' => is_array($model->ignorePath) ? implode(',', $model->ignorePath) : '',
-					'placeholder' => 'Ex.: /commands,/modules/api',
-				]) ?>
+                <?= $form->field($model, 'ignorePath')->textInput([
+                    'value' => is_array($model->ignorePath) ? implode(',', $model->ignorePath) : '',
+                    'placeholder' => 'Ex.: /commands,/modules/api',
+                ]) ?>
 
-				<?= $form->field($model, 'routesBase')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'routesBase')->textInput(['maxlength' => true]) ?>
 
-			</div>
-			<div class="box-footer card-footer text-right">
-				<?= Html::submitButton('Scan', ['class' => 'btn btn-success']) ?>
-			</div>
-		</div>
-		<?php $form::end(); ?>
-	</div>
+            </div>
+            <div class="box-footer card-footer text-right">
+                <?= Html::submitButton('Scan', ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
+        <?php $form::end(); ?>
+    </div>
 </div>

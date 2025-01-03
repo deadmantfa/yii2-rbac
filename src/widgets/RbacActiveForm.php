@@ -1,9 +1,15 @@
 <?php
 
-namespace justcoded\yii2\rbac\widgets;
+declare(strict_types=1);
 
-use yii\bootstrap\ActiveForm;
+namespace deadmantfa\yii2\rbac\widgets;
 
+
+use yii\bootstrap4\ActiveForm;
+
+/**
+ * @method static begin(string[] $array)
+ */
 class RbacActiveForm extends ActiveForm
 {
 }

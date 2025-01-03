@@ -1,16 +1,18 @@
 <?php
 
-namespace justcoded\yii2\rbac\widgets;
+declare(strict_types=1);
+
+namespace deadmantfa\yii2\rbac\widgets;
 
 use yii\grid\GridView;
 
 class RbacGridView extends GridView
 {
-	/**
-	 * @inheritdoc
-	 * @var string
-	 */
-	public $layout = '
+    /**
+     * @inheritdoc
+     * @var string
+     */
+    public $layout = '
 		{items}
 		<div class="row">
 			<div class="col-md-6">{summary}</div>

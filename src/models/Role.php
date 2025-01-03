@@ -1,110 +1,112 @@
 <?php
 
-namespace justcoded\yii2\rbac\models;
+declare(strict_types=1);
+
+namespace deadmantfa\yii2\rbac\models;
 
 
+use Exception;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\rbac\Permission as RbacPermission;
 use yii\rbac\Role as RbacRole;
-use yii\rbac\Rule as RbacRule;
 
 class Role extends Item
 {
-	/**
-	 * @var RbacRole Rbac item object.
-	 */
-	private $item;
+    /**
+     * @var RbacRole Rbac item object.
+     */
+    private RbacRole $item;
 
-	/**
-	 * Role constructor.
-	 *
-	 * @param RbacRole|null $item
-	 */
-	public function __construct(RbacRole $item = null)
-	{
-		if ($item) {
-			$this->setItem($item);
-		}
-	}
+    /**
+     * Role constructor.
+     *
+     * @param RbacRole|null $item
+     */
+    public function __construct(RbacRole $item = null)
+    {
+        if ($item) {
+            $this->setItem($item);
+        }
+    }
 
-	/**
-	 * @param RbacRole|null $item
-	 */
-	public function setItem(RbacRole $item = null)
-	{
-		$this->item = $item;
-	}
+    /**
+     * Alias for authManager getPermission
+     *
+     * @param string $name
+     *
+     * @return null|Role
+     */
+    public static function find(string $name): ?Role
+    {
+        if ($item = Yii::$app->authManager->getRole($name)) {
+            return new Role($item);
+        }
+        return null;
+    }
 
-	/**
-	 * @return RbacRole
-	 */
-	public function getItem()
-	{
-		return $this->item;
-	}
+    /**
+     * Return key-value pairs of all roles names
+     *
+     * @return array
+     */
+    public static function getList(): array
+    {
+        $data = Yii::$app->authManager->getRoles();
 
-	/**
-	 * Alias for authManager getPermission
-	 *
-	 * @param string $name
-	 *
-	 * @return null|Role
-	 */
-	public static function find($name)
-	{
-		if ($item = Yii::$app->authManager->getRole($name)) {
-			return new Role($item);
-		}
-		return null;
-	}
+        return ArrayHelper::map($data, 'name', 'name');
+    }
 
-	/**
-	 * Return key-value pairs of all roles names
-	 *
-	 * @return array
-	 */
-	public static function getList()
-	{
-		$data = Yii::$app->authManager->getRoles();
+    /**
+     * Create role inside application authManager
+     *
+     * @param string $name
+     * @param string $descr
+     *
+     * @return RbacRole
+     * @throws Exception
+     */
+    public static function create(string $name, string $descr): RbacRole
+    {
+        $auth = Yii::$app->authManager;
 
-		return ArrayHelper::map($data, 'name', 'name');
-	}
+        // create permission
+        $r = $auth->createRole($name);
+        $r->description = $descr;
+        $auth->add($r);
 
-	/**
-	 * Create role inside application authManager
-	 *
-	 * @param string    $name
-	 * @param string    $descr
-	 *
-	 * @return \yii\rbac\Role
-	 */
-	public static function create($name, $descr)
-	{
-		$auth = Yii::$app->authManager;
+        return $r;
+    }
 
-		// create permission
-		$r = $auth->createRole($name);
-		$r->description = $descr;
-		$auth->add($r);
+    public static function getPermissionsRecursive($roleName): array
+    {
+        $results = [];
 
-		return $r;
-	}
+        $children = Yii::$app->authManager->getChildren($roleName);
+        foreach ($children as $name => $item) {
+            if (Role::TYPE_ROLE == $item->type) {
+                continue;
+            }
 
-	public static function getPermissionsRecursive($roleName)
-	{
-		$results = [];
+            $results[$name] = $name;
+            $results += static::getPermissionsRecursive($name);
+        }
 
-		$children = Yii::$app->authManager->getChildren($roleName);
-		foreach ($children as $name => $item) {
-			if (Role::TYPE_ROLE == $item->type) {
-				continue;
-			}
+        return $results;
+    }
 
-			$results[$name] = $name;
-			$results += static::getPermissionsRecursive($name);
-		}
+    /**
+     * @return RbacRole
+     */
+    public function getItem(): RbacRole
+    {
+        return $this->item;
+    }
 
-		return $results;
-	}
+    /**
+     * @param RbacRole|null $item
+     */
+    public function setItem(RbacRole $item = null): void
+    {
+        $this->item = $item;
+    }
 }

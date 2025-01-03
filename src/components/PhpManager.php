@@ -1,17 +1,17 @@
 <?php
 
-namespace justcoded\yii2\rbac\components;
+declare(strict_types=1);
 
-use justcoded\yii2\rbac\models\Item;
-use yii\db\Query;
+namespace deadmantfa\yii2\rbac\components;
+
 use yii\rbac\Permission;
 
 class PhpManager extends \yii\rbac\PhpManager
 {
-	use AutoMasterItemTrait;
+    use AutoMasterItemTrait;
 
-	/**
-	 * @var Permission|null
-	 */
-	protected $_masterPermission;
+    /**
+     * @var Permission|null
+     */
+    protected $_masterPermission;
 }

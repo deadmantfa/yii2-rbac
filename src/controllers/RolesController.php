@@ -1,104 +1,109 @@
 <?php
 
-namespace justcoded\yii2\rbac\controllers;
+declare(strict_types=1);
 
-use justcoded\yii2\rbac\forms\RoleForm;
-use justcoded\yii2\rbac\models\Role;
+namespace deadmantfa\yii2\rbac\controllers;
+
+use deadmantfa\yii2\rbac\forms\RoleForm;
+use deadmantfa\yii2\rbac\models\Role;
+use Exception;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\web\Controller;
 
 /**
  * RolesController implements the CRUD actions for AuthItems model.
  */
 class RolesController extends Controller
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function behaviors()
-	{
-		return [
-			'verbs' => [
-				'class'   => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function behaviors(): array
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
 
-	/**
-	 * Create form/action
-	 *
-	 * @return array|string|Response
-	 */
-	public function actionCreate()
-	{
-		$model = new RoleForm();
-		$model->scenario = $model::SCENARIO_CREATE;
+    /**
+     * Create form/action
+     *
+     * @return Response|string
+     * @throws Exception
+     */
+    public function actionCreate(): Response|string
+    {
+        $model = new RoleForm();
+        $model->scenario = $model::SCENARIO_CREATE;
 
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			Yii::$app->session->setFlash('success', 'Role saved successfully.');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Role saved successfully.');
 
-			return $this->redirect(['update', 'name' => $model->name]);
-		}
+            return $this->redirect(['update', 'name' => $model->name]);
+        }
 
-		return $this->render('create', [
-			'model' => $model,
-		]);
-	}
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
 
-	/**
-	 * Update form/action
-	 *
-	 * @param string $name
-	 *
-	 * @return array|string|Response
-	 * @throws NotFoundHttpException
-	 */
-	public function actionUpdate($name)
-	{
-		if (! $role = Role::find($name)) {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+    /**
+     * Update form/action
+     *
+     * @param string $name
+     *
+     * @return array|string|Response
+     * @throws NotFoundHttpException
+     * @throws Exception
+     */
+    public function actionUpdate(string $name): Response|array|string
+    {
+        if (!$role = Role::find($name)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
-		$model = new RoleForm();
-		$model->setRole($role);
+        $model = new RoleForm();
+        $model->setRole($role);
 
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			Yii::$app->session->setFlash('success', 'Role saved successfully.');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Role saved successfully.');
 
-			return $this->redirect(['update', 'name' => $model->name]);
-		}
+            return $this->redirect(['update', 'name' => $model->name]);
+        }
 
-		return $this->render('update', [
-			'model' => $model,
-			'role'  => $role,
-		]);
-	}
+        return $this->render('update', [
+            'model' => $model,
+            'role' => $role,
+        ]);
+    }
 
-	/**
-	 * Delete action
-	 *
-	 * @param string $name
-	 *
-	 * @return Response
-	 * @throws NotFoundHttpException
-	 */
-	public function actionDelete($name)
-	{
-		if (! $role = Role::find($name)) {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
+    /**
+     * Delete action
+     *
+     * @param string $name
+     *
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDelete(string $name): Response
+    {
+        if (!$role = Role::find($name)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
-		if (Yii::$app->authManager->remove($role->getItem())) {
-			Yii::$app->session->setFlash('success', 'Role removed successfully.');
-		}
+        if (Yii::$app->authManager->remove($role->getItem())) {
+            Yii::$app->session->setFlash('success', 'Role removed successfully.');
+        }
 
-		return $this->redirect(['permissions/index']);
-	}
+        return $this->redirect(['permissions/index']);
+    }
 }
 

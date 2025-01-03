@@ -16,7 +16,7 @@ By default this extension init such roles and permissions:
 
 __Permissions:__
 
-* __\*__ - master permission. parent of all other permissions 
+* __\*__ - master permission. parent of all other permissions
 * __administer__ - permission you may use to check access to admin panel
 
 __Roles:__
@@ -37,10 +37,10 @@ You can create additional roles (or add permissions to existed roles) to configu
 
 #### Routes Access filter
 
-Most popular thing in RBAC configuration is to close access to some parts of the site (logged in area, 
+Most popular thing in RBAC configuration is to close access to some parts of the site (logged in area,
 different user roles, admin area, etc.).
 
-Extension provides filter very similar to standard AccessControl which check `{controller->uniqueId}/*`, 
+Extension provides filter very similar to standard AccessControl which check `{controller->uniqueId}/*`,
 `{controller->uniqueId}/{action->id}` permission on page load and throw 403 error if you're not allowed
 to access routes.
 
@@ -57,13 +57,13 @@ The preferred way to install this extension is through composer.
 Either run
 
 ```bash
-php composer.phar require --prefer-dist justcoded/yii2-rbac "*"
+php composer.phar require --prefer-dist deadmantfa/yii2-rbac "*"
 ```
 
 or add
 
 ```
-"justcoded/yii2-rbac": "*"
+"deadmantfa/yii2-rbac": "*"
 ```
 
 to the require section of your composer.json.
@@ -78,15 +78,15 @@ To use the RBAC extension, you need to configure the components array in your ap
 'modules' => [
 	...
 	'rbac' => [
-		'class' => 'justcoded\yii2\rbac\Module'
+		'class' => 'deadmantfa\yii2\rbac\Module'
 	],
 	...
 ],
 'components' => [
 	...
 	'authManager' => [
-		'class' => 'justcoded\yii2\rbac\components\DbManager',
-		//'class' => 'justcoded\yii2\rbac\components\PhpManager',
+		'class' => 'deadmantfa\yii2\rbac\components\DbManager',
+		//'class' => 'deadmantfa\yii2\rbac\components\PhpManager',
 	],
 	...
 ],
@@ -103,11 +103,11 @@ this:
 'container' => [
 	'definitions' => [
 		// you can create your own GrivView to customize all options for main roles and permissions lists.
-		'justcoded\yii2\rbac\widgets\RbacGridView' => [
+		'deadmantfa\yii2\rbac\widgets\RbacGridView' => [
 			'class' => \app\modules\admin\widgets\RbacGridView::class,
 		],
 		// this will replace bootstrap3 ActiveForm with bootstrap4 ActiveForm.
-		'justcoded\yii2\rbac\widgets\RbacActiveForm' => [
+		'deadmantfa\yii2\rbac\widgets\RbacActiveForm' => [
 			'class' => \yii\bootstrap4\ActiveForm::class,
 		],
 	],
@@ -118,11 +118,12 @@ this:
 
 #### Basic RBAC configuration
 
-Please follow [oficial documentation](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#configuring-rbac)
+Please
+follow [oficial documentation](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#configuring-rbac)
 to configure RBAC storage (create necessary files or database tables).
 
 If you use DbManager you can init database tables with the following migration command:
- 
+
 ```bash
 yii migrate --migrationPath=@yii/rbac/migrations
 ```
@@ -144,12 +145,11 @@ php yii rbac/assign-master 1
 php yii rbac/scan
 
 # ADVANCED TEMPLATE ONLY: scan routes for rbac module.
-php yii rbac/scan -p='@vendor/justcoded/yii2-rbac' -b='rbac/'
+php yii rbac/scan -p='@vendor/deadmantfa/yii2-rbac' -b='rbac/'
 
 # BASIC TEMPLATE ONLY: in case you use 'admin' module for backend:
-php yii rbac/scan -p='@vendor/justcoded/yii2-rbac' -b='admin/rbac/'
+php yii rbac/scan -p='@vendor/deadmantfa/yii2-rbac' -b='admin/rbac/'
 ```
-
 
 ### Usage
 
@@ -158,12 +158,12 @@ php yii rbac/scan -p='@vendor/justcoded/yii2-rbac' -b='admin/rbac/'
 To use graphical interface just follow the route you specified as base when scan routes / configure module.
 
 > **Note:** Role Permissions selector is a hotfix solution, so it doesn't display proper tree structure when
-you move items between boxes.
+> you move items between boxes.
 > This will be fixed in next versions.
 
 #### Route Access filter
 
-RouteAccessControl filter can be used inside specific controller (or globally) to control access to 
+RouteAccessControl filter can be used inside specific controller (or globally) to control access to
 controller actions on very high level.
 
 Routes scanner insert permissions like:
@@ -171,7 +171,7 @@ Routes scanner insert permissions like:
 {controller->uniqueId}/*
 {controller->uniqueId}/{action->id}
 
-On controller beforeAction this filter check that current logged in user has permissions to access these routes. 
+On controller beforeAction this filter check that current logged in user has permissions to access these routes.
 
 To enable filter inside some specific controller:
 
@@ -180,7 +180,7 @@ To enable filter inside some specific controller:
 	{
 		return [
 			'routeAccess' => [
-				'class' => 'justcoded\yii2\rbac\filters\RouteAccessControl',
+				'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
 			],
 		];
 	}
@@ -190,7 +190,7 @@ Or you can configure this filter globally. Inside you current application config
 
 ```php
 	'as routeAccess' => [
-		'class' => 'justcoded\yii2\rbac\filters\RouteAccessControl',
+		'class' => 'deadmantfa\yii2\rbac\filters\RouteAccessControl',
 		'allowActions' => [
 			'site/*',
 		],

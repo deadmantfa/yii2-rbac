@@ -1,19 +1,25 @@
 <?php
-/* @var $this \yii\web\View */
-/* @var $model \justcoded\yii2\rbac\forms\RoleForm */
 
-$this->title                   = 'Add role';
+declare(strict_types=1);
+/* @var $this View */
+
+/* @var $model RoleForm */
+
+use deadmantfa\yii2\rbac\forms\RoleForm;
+use yii\web\View;
+
+$this->title = 'Add role';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['permissions/index']];
 $this->params['breadcrumbs'][] = $this->title;
-$this->params['heading']       = 'Permissions';
-$this->params['subheading']    = 'Add Role';
+$this->params['heading'] = 'Permissions';
+$this->params['subheading'] = 'Add Role';
 ?>
 
 <div class="role-create">
 
-	<?= $this->render('_form', [
-		'model' => $model,
-	]) ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
 
 </div>
 
