@@ -14,6 +14,10 @@ v2.0.0
 * UPDATED: Simplified roles and permissions initialization via CLI commands.
 * FIXED: Bug with unused or redundant variables in core classes.
 * FIXED: Improved `Routes Scanner` to handle edge cases in controllers and actions.
+* NEW: Validation to prevent circular dependencies when adding permission relations.
+* UPDATED: `PermissionRelForm` class with a method to detect and prevent hierarchy loops.
+* UPDATED: `PermissionsController::actionAddRelation` to validate relations before adding.
+* FIXED: Improved error handling and user feedback for hierarchy-related issues in permission relations.
 
 v1.2.1
 ---------------------

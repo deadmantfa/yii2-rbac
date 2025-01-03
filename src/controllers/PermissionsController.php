@@ -142,16 +142,24 @@ class PermissionsController extends Controller
         $model = new PermissionRelForm();
         if ($model->load(Yii::$app->request->post())) {
             $model->setPermission($perm);
-            //TODO make it no possible to choose loop created items
+
             try {
+                $newRelations = Yii::$app->request->post('PermissionRelForm')['relations'] ?? [];
+                foreach ($newRelations as $newItem) {
+                    if (!$model->validateNoHierarchyLoop($newItem)) {
+                        Yii::$app->session->setFlash('warning', "Cannot add relation '$newItem' due to hierarchy loop.");
+                        return $this->redirect(['update', 'name' => $name]);
+                    }
+                }
+
                 if ($model->addRelations()) {
                     Yii::$app->session->setFlash('success', 'New relations added successfully.');
                 } else {
                     $errors = $model->getFirstErrors();
-                    Yii::$app->session->setFlash('warning', $errors ? reset($errors) : 'Some error occured.');
+                    Yii::$app->session->setFlash('warning', $errors ? reset($errors) : 'Some error occurred.');
                 }
             } catch (Exception) {
-                Yii::$app->session->setFlash('warning', 'Relations can\'t be added because of hierarchy loop or impossible nesting.');
+                Yii::$app->session->setFlash('warning', 'Relations can\'t be added due to hierarchy loop or nesting issues.');
             }
         }
 
