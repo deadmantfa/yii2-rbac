@@ -14,24 +14,10 @@ use yii\rbac\Item;
 
 class RoleForm extends ItemForm
 {
-    /**
-     * @var string[]
-     */
-    public array $childRoles = [];
-
-    /**
-     * @var string[]
-     */
-    public array $allowPermissions = [];
-
-    /**
-     * @var string[]
-     */
-    protected array $inheritPermissions = [];
-
-    /**
-     * @var Role
-     */
+    public array $childRoles = []; // Default value
+    public array $allowPermissions = []; // Default value
+    protected array $inheritPermissions = []; // Default value
+    
     protected Role $role;
 
     /**
@@ -80,8 +66,9 @@ class RoleForm extends ItemForm
     /**
      * @inheritdoc
      */
-    public function uniqueItemName(string $attribute, array $params, mixed $validator): bool
+    public function uniqueItemName(string $attribute, array $params = null, mixed $validator = null): bool
     {
+        unset($params, $validator);
         $name = $this->$attribute;
         if (Role::find($name)) {
             $this->addError($attribute, 'Role with the same name is already exists.');

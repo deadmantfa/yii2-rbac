@@ -9,8 +9,6 @@ use deadmantfa\yii2\rbac\models\Permission;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
-use yii\rbac\Permission as RbacPermission;
-use yii\rbac\Role as RbacRole;
 
 class ScanForm extends Model
 {
@@ -18,30 +16,22 @@ class ScanForm extends Model
 
     /**
      * Path to scan.
-     *
-     * @var string
      */
     public string $path;
 
     /**
      * Paths to ignore.
      * Use comma to specify several paths.
-     *
-     * @var array|string
      */
     public string|array $ignorePath;
 
     /**
-     * Routes base prefix to be added to all found routes
-     *
-     * @var string
+     * Routes base prefix to be added to all found routes.
      */
     public string $routesBase;
 
     /**
      * Internal items cache array to speed up some operations.
-     *
-     * @var RbacPermission[]|RbacRole[]
      */
     protected array $itemsCache;
 
@@ -74,17 +64,10 @@ class ScanForm extends Model
     }
 
     /**
-     * Validate that passed value is a real directory path
-     *
-     * @param string $attribute
-     * @param array $params
-     * @param mixed $validator
-     *
-     * @return bool
+     * Validate that passed value is a real directory path.
      */
-    public function validDir(string $attribute, array $params, mixed $validator): bool
+    public function validDir(string $attribute): bool
     {
-        unset($params, $validator);
         if (!is_dir($this->$attribute)) {
             $this->addError(
                 $attribute,
@@ -127,9 +110,7 @@ class ScanForm extends Model
     }
 
     /**
-     * Run routes scan
-     *
-     * @return array|false
+     * Run routes scan.
      */
     public function scan(): bool|array
     {
@@ -150,10 +131,6 @@ class ScanForm extends Model
 
     /**
      * Import permissions with wildcards, if they have / inside.
-     *
-     * @param string[] $permissions
-     *
-     * @return array
      * @throws Exception
      */
     public function importPermissions(array $permissions): array

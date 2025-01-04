@@ -16,10 +16,8 @@ class PermissionRelForm extends Model
     const SCENARIO_ADDPARENT = 'parent';
     const SCENARIO_ADDCHILD = 'child';
 
-    /**
-     * @var string[]
-     */
-    public array $names;
+
+    public $names;
 
     /**
      * @var Permission

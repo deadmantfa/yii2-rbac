@@ -10,13 +10,13 @@ abstract class ItemForm extends Model
 {
     const SCENARIO_CREATE = 'create';
 
-    public string $name;
-    public int $type;
-    public ?string $description;
-    public ?string $ruleName;
-    public ?string $data;
-    public ?int $createdAt;
-    public ?int $updatedAt;
+    public string $name = ''; // Default value
+    public int $type = 0; // Default value
+    public ?string $description = null;
+    public ?string $ruleName = null;
+    public ?string $data = null;
+    public ?int $createdAt = null;
+    public ?int $updatedAt = null;
 
     /**
      * @return array
@@ -65,5 +65,4 @@ abstract class ItemForm extends Model
             'ruleName' => 'Rule Class',
         ];
     }
-
 }

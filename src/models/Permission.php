@@ -4,67 +4,50 @@ declare(strict_types=1);
 
 namespace deadmantfa\yii2\rbac\models;
 
-
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Permission as RbacPermission;
-use yii\rbac\Role as RbacRole;
-use yii\rbac\Rule as RbacRule;
 
 class Permission extends Item
 {
     /**
-     * @var RbacPermission[]
+     * @var RbacPermission[] Cached permissions.
      */
-    public static array $itemsCache;
+    public static array $itemsCache = [];
 
     /**
-     * @var array
+     * @var array Cached parent-child relations.
      */
-    private static array $parentsCache;
+    private static array $parentsCache = [];
 
     /**
-     * @var RbacPermission Rbac item object.
+     * @var RbacPermission|null RBAC item object.
      */
-    private RbacPermission $item;
+    private ?RbacPermission $item = null;
 
-    /**
-     * Role constructor.
-     *
-     * @param RbacPermission|null $item
-     */
-    public function __construct(RbacPermission $item = null)
+    public function __construct(?RbacPermission $item = null)
     {
-        if ($item) {
+        if ($item !== null) {
             $this->setItem($item);
         }
     }
 
     /**
-     * Alias for authManager getPermission
-     *
-     * @param string $name
-     *
-     * @return null|Permission
+     * Alias for authManager getPermission.
      */
-    public static function find(string $name): ?Permission
+    public static function find(string $name): ?self
     {
-        if ($item = Yii::$app->authManager->getPermission($name)) {
-            return new Permission($item);
-        }
-        return null;
+        $item = Yii::$app->authManager->getPermission($name);
+        return $item ? new self($item) : null;
     }
 
     /**
-     * Return key-value pairs of all permission names
-     *
-     * @return array
+     * Return key-value pairs of all permission names.
      */
     public static function getList(): array
     {
         $data = Yii::$app->authManager->getPermissions();
-
         return ArrayHelper::map($data, 'name', 'name');
     }
 
@@ -98,24 +81,17 @@ class Permission extends Item
     }
 
     /**
-     * Create permission inside application authManager
-     *
-     * @param string $name
-     * @param string $descr
-     * @param RbacRule|null $rule
-     * @param Permission[]|RbacRole[] $parents assign permission to some parent
-     *
-     * @return RbacPermission
+     * Create a new permission.
      * @throws Exception
      * @throws \Exception
      */
-    public static function create(string $name, string $descr, RbacRule $rule = null, array $parents = []): RbacPermission
+    public static function create(string $name, string $description, $rule = null, $parents = []): RbacPermission
     {
         $auth = Yii::$app->authManager;
 
         // create permission
         $p = $auth->createPermission($name);
-        $p->description = $descr;
+        $p->description = $description;
         if ($rule) {
             $p->ruleName = $rule->name;
         }
@@ -164,9 +140,7 @@ class Permission extends Item
     }
 
     /**
-     * Permission direct children permissions
-     *
-     * @return RbacPermission[]|\yii\rbac\Item[]
+     * Permission direct children permissions.
      */
     public function getChildren(): array
     {
@@ -174,25 +148,42 @@ class Permission extends Item
     }
 
     /**
-     * @return RbacPermission
+     * Get the RBAC item.
+     *
      */
-    public function getItem(): RbacPermission
+    public function getItem(): ?RbacPermission
     {
         return $this->item;
     }
 
     /**
-     * @param RbacPermission|null $item
+     * Set the RBAC item.
      */
-    public function setItem(RbacPermission $item = null): void
+    public function setItem(?RbacPermission $item): void
     {
         $this->item = $item;
     }
 
     /**
+     * Permission direct parent permissions.
+     */
+    public function getParents(): array
+    {
+        $parents = [];
+        $permissions = Yii::$app->authManager->getPermissions();
+        foreach ($permissions as $perm) {
+            if (Yii::$app->authManager->hasChild($perm, $this->item)) {
+                $parents[$perm->name] = $perm;
+            }
+        }
+
+        return $parents;
+    }
+
+    /**
      * Permission roles it's assigned to
      *
-     * @return RbacRole[]
+     * @return \yii\rbac\Role[]
      */
     public function getRoles(): array
     {
@@ -208,23 +199,4 @@ class Permission extends Item
 
         return $parents;
     }
-
-    /**
-     * Permission direct parent permissions
-     *
-     * @return RbacPermission[]
-     */
-    public function getParents(): array
-    {
-        $parents = [];
-        $permissions = Yii::$app->authManager->getPermissions();
-        foreach ($permissions as $perm) {
-            if (Yii::$app->authManager->hasChild($perm, $this->item)) {
-                $parents[$perm->name] = $perm;
-            }
-        }
-
-        return $parents;
-    }
-
 }

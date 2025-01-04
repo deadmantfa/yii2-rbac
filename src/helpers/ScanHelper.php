@@ -46,7 +46,8 @@ class ScanHelper
             $ignoredControllers = new RegexIterator(
                 $allControllers,
                 "#^.+$ignorePattern.+Controller\.php$#",
-                RecursiveRegexIterator::GET_MATCH
+                RecursiveRegexIterator::GET_MATCH,
+                RecursiveRegexIterator::USE_KEY
             );
 
             $ignoredPaths = array_keys(iterator_to_array($ignoredControllers));
@@ -61,36 +62,71 @@ class ScanHelper
      *
      * @param array $controllerFiles
      * @return array
+     * @throws ReflectionException
      */
     public static function scanControllerActionIds(array $controllerFiles): array
     {
         $actions = [];
-
-        foreach ($controllerFiles as $filePath) {
-            $namespace = self::getNamespaceFromFile($filePath);
-            $className = self::getClassNameFromFile($filePath);
-
-            if ($namespace === null || $className === null) {
+        foreach ($controllerFiles as $filename) {
+            $content = file_get_contents($filename);
+            $content = preg_replace(
+                "/(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*\/)|(\/\/.*)/i",
+                '',
+                $content
+            );
+            // ignore abstract classes
+            if (str_contains($content, 'abstract class')) {
                 continue;
             }
 
-            $fullyQualifiedClassName = "\\$namespace\\$className";
-
-            try {
-                $reflection = new ReflectionClass($fullyQualifiedClassName);
-            } catch (ReflectionException) {
-                Yii::warning("RBAC Scanner: Failed to reflect class $fullyQualifiedClassName.");
+            if (!preg_match('/namespace\s+([a-z0-9_\\\\]+)/i', $content, $namespaceMatch)) {
                 continue;
             }
 
+            if (!preg_match('/class\s+(([a-z0-9_]+)Controller)[^{]+{/i', $content, $classMatch)) {
+                continue;
+            }
+
+            $className = '\\' . $namespaceMatch[1] . '\\' . $classMatch[1];
+            $reflection = new ReflectionClass($className);
+
+            // ignore console commands
             if (!$reflection->isSubclassOf(Controller::class)) {
                 continue;
             }
 
-            $moduleId = self::getModuleIdFromNamespace($reflection->getNamespaceName());
-            $controllerId = Inflector::slug(Inflector::camel2words($className));
+            // find public methods
+            $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
-            $actions = array_merge($actions, self::getPublicActions($reflection, $moduleId, $controllerId));
+            $moduleId = '';
+            if (preg_match('/modules\\\\([a-z0-9_-]+)\\\\/i', $reflection->getNamespaceName(), $moduleMatch)) {
+                $moduleId = Inflector::slug(Inflector::camel2words($moduleMatch[1])) . '/';
+            }
+
+            foreach ($methods as $method) {
+                if (!preg_match('/^action([A-Z]([a-zA-Z0-9]+))$/', $method->getName(), $actionMatch)
+                    && !('actions' === $method->getName() && $reflection->getName() === $method->class)
+                ) {
+                    continue;
+                }
+                $controllerId = Inflector::slug(Inflector::camel2words($classMatch[2]));
+
+                if ('actions' === $method->getName()) {
+                    try {
+                        $controllerObj = Yii::createObject($method->class, [$controllerId, Yii::$app]);
+                        $customActions = $controllerObj->actions();
+                        foreach ($customActions as $actionId => $params) {
+                            $actions[] = $moduleId . $controllerId . '/' . $actionId;
+                        }
+                    } catch (Exception $e) {
+                        Yii::warning("RBAC Scanner: can't scan custom actions from {$method->class}::actions(). You will need to add them manually.");
+                    }
+
+                } else {
+                    $actionId = Inflector::slug(Inflector::camel2words($actionMatch[1]));
+                    $actions[] = $moduleId . $controllerId . '/' . $actionId;
+                }
+            }
         }
 
         return $actions;

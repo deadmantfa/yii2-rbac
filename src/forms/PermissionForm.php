@@ -5,34 +5,23 @@ declare(strict_types=1);
 namespace deadmantfa\yii2\rbac\forms;
 
 use deadmantfa\yii2\rbac\models\Permission;
-use Exception;
 use ReflectionClass;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
-use yii\rbac\Item;
 use yii\rbac\Rule;
-
 
 class PermissionForm extends ItemForm
 {
-    /**
-     * @var string
-     */
-    public string $ruleClass;
+    public ?string $ruleClass = null;
 
-    /**
-     * @var Permission
-     */
     protected Permission $permission;
-
-    /**
-     * @inheritdoc
-     */
 
     public function init(): void
     {
-        $this->type = Item::TYPE_PERMISSION;
+        parent::init();
+        $this->type = Permission::TYPE_PERMISSION;
         $this->permission = new Permission();
     }
 
@@ -61,50 +50,7 @@ class PermissionForm extends ItemForm
     }
 
     /**
-     * @inheritdoc
-     */
-    public function uniqueItemName(string $attribute, array $params, mixed $validator): bool
-    {
-        unset($params, $validator); // Suppress unused warnings
-        $name = $this->$attribute;
-        if (Permission::find($name)) {
-            $this->addError($attribute, 'Permission with the same name already exists.');
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Validate Rule Class to be namespaced class name and instance of yii\rbac\Rule
-     *
-     * @param string $attribute
-     * @param array $params
-     * @param mixed $validator
-     *
-     * @return bool
-     */
-    public function validRuleClass(string $attribute, array $params, mixed $validator): bool
-    {
-        unset($params, $validator); // Suppress unused warnings
-        $class = $this->$attribute;
-        if (!class_exists($class)) {
-            $this->addError($attribute, 'Not valid class name.');
-            return false;
-        } else {
-            $reflect = new ReflectionClass($class);
-            if (!$reflect->isSubclassOf(Rule::class)) {
-                $this->addError($attribute, 'Class have to be extended of \\yii\\rbac\\Rule class');
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Load permission data to properties and set correct ruleClass
-     *
-     * @param Permission $permission
+     * Load permission data and set the rule class.
      */
     public function setPermission(Permission $permission): void
     {
@@ -114,11 +60,9 @@ class PermissionForm extends ItemForm
     }
 
     /**
-     * Find rule namespaced class name by current ruleName
-     *
-     * @return null|string
+     * Get the rule class name from ruleName.
      */
-    public function getRuleClassName(): ?string
+    private function getRuleClassName(): ?string
     {
         if ($this->ruleName) {
             $rule = Yii::$app->authManager->getRule($this->ruleName);
@@ -128,16 +72,11 @@ class PermissionForm extends ItemForm
     }
 
     /**
-     * Get RBAC Rule object
-     * create/register in case rule doesn't exists
-     *
-     * @param string $className
-     *
-     * @return Rule
+     * Get the RBAC rule object.
      * @throws InvalidConfigException
-     * @throws Exception
+     * @throws \Exception
      */
-    public function getRule(string $className): Rule
+    private function getRule(string $className): Rule
     {
         $rules = Yii::$app->authManager->getRules();
         foreach ($rules as $rule) {
@@ -146,22 +85,17 @@ class PermissionForm extends ItemForm
             }
         }
 
-        // Create and register the rule if it doesn't exist
+        // no rule found - creating rule
         $rule = Yii::createObject("\\" . $className);
-        if (!$rule instanceof Rule) {
-            throw new InvalidConfigException("The class $className must extend \\yii\\rbac\\Rule.");
-        }
-
         Yii::$app->authManager->add($rule);
         return $rule;
     }
 
     /**
-     * Create single permission with rule name
+     * Create or update a permission.
      *
-     * @return bool
-     * @throws InvalidConfigException
      * @throws Exception
+     * @throws \Exception
      */
     public function save(): bool
     {
@@ -183,4 +117,44 @@ class PermissionForm extends ItemForm
         return Yii::$app->authManager->update($item->name, $item);
     }
 
+    /**
+     * Validate that the item name is unique.
+     */
+    public function uniqueItemName(string $attribute, array $params, mixed $validator): bool
+    {
+        unset($params, $validator);
+        $name = $this->$attribute;
+        if ($item = Permission::find($name)) {
+            $this->addError($attribute, 'Permission with the same name is already exists.');
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate Rule Class to be namespaced class name and instance of yii\rbac\Rule
+     *
+     * @param string $attribute
+     * @param array $params
+     * @param mixed $validator
+     *
+     * @return bool
+     */
+    public function validRuleClass(string $attribute, array $params, mixed $validator): bool
+    {
+        unset($params, $validator);
+        $class = $this->$attribute;
+        if (!class_exists($class)) {
+            $this->addError($attribute, 'Not valid class name.');
+            return false;
+        } else {
+            $reflect = new ReflectionClass($class);
+            if (!$reflect->isSubclassOf(Rule::class)) {
+                $this->addError($attribute, 'Class have to be extended of \\yii\\rbac\\Rule class');
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
