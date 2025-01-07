@@ -123,7 +123,7 @@ class PermissionForm extends ItemForm
     /**
      * Validate that the item name is unique.
      */
-    public function uniqueItemName(string $attribute, array $params, mixed $validator): bool
+    public function uniqueItemName(string $attribute, ?array $params, mixed $validator): bool
     {
         unset($params, $validator);
         $name = $this->$attribute;
@@ -143,7 +143,7 @@ class PermissionForm extends ItemForm
      *
      * @return bool
      */
-    public function validRuleClass(string $attribute, array $params, mixed $validator): bool
+    public function validRuleClass(string $attribute, ?array $params, mixed $validator): bool
     {
         unset($params, $validator);
         $class = $this->$attribute;

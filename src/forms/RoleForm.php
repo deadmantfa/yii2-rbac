@@ -66,7 +66,7 @@ class RoleForm extends ItemForm
     /**
      * @inheritdoc
      */
-    public function uniqueItemName(string $attribute, array $params = null, mixed $validator = null): bool
+    public function uniqueItemName(string $attribute, ?array $params = null, mixed $validator = null): bool
     {
         unset($params, $validator);
         $name = $this->$attribute;
