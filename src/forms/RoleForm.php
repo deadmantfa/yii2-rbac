@@ -17,7 +17,7 @@ class RoleForm extends ItemForm
     public array $childRoles = []; // Default value
     public array $allowPermissions = []; // Default value
     protected array $inheritPermissions = []; // Default value
-    
+
     protected Role $role;
 
     /**
@@ -195,7 +195,7 @@ class RoleForm extends ItemForm
             return [];
         }
 
-        list($parents, $children) = Permission::getParentChildMap($missingParents ? null : $permissions);
+        list($parents, $children) = Permission::getParentChildMap($missingParents ? [] : $permissions);
 
         return $this->buildLinearTree($permissions, $permissions, $children, $parents);
     }

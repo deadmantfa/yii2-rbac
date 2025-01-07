@@ -6,6 +6,7 @@ namespace deadmantfa\yii2\rbac\forms;
 
 use deadmantfa\yii2\rbac\helpers\ScanHelper;
 use deadmantfa\yii2\rbac\models\Permission;
+use ReflectionException;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
@@ -17,23 +18,23 @@ class ScanForm extends Model
     /**
      * Path to scan.
      */
-    public string $path;
+    public $path;
 
     /**
      * Paths to ignore.
      * Use comma to specify several paths.
      */
-    public string|array $ignorePath;
+    public $ignorePath;
 
     /**
      * Routes base prefix to be added to all found routes.
      */
-    public string $routesBase;
+    public $routesBase;
 
     /**
      * Internal items cache array to speed up some operations.
      */
-    protected array $itemsCache;
+    protected $itemsCache;
 
     /**
      * @inheritdoc
@@ -111,6 +112,7 @@ class ScanForm extends Model
 
     /**
      * Run routes scan.
+     * @throws ReflectionException
      */
     public function scan(): bool|array
     {

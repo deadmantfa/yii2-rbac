@@ -15,7 +15,7 @@ class Role extends Item
     /**
      * @var RbacRole Rbac item object.
      */
-    private RbacRole $item;
+    private $item;
 
     /**
      * Role constructor.
