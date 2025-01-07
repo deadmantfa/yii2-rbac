@@ -33,9 +33,16 @@ RbacAssetBundle::register($this);
 
         <?= $form->field($model, 'childRoles')
             ->inline()
-            ->checkboxList(array_diff(Role::getList(), [$model->name]), [
-                'value' => $model->childRoles,
-            ])
+            ->checkboxList(
+                array_diff(Role::getList(), [$model->name]),
+                [
+                    // Preselect checkboxes from $model->childRoles
+                    'value' => $model->childRoles,
+
+                    // If user unchecks everything, childRoles won't become a string:
+                    'unselect' => null,
+                ]
+            );
         ?>
 
         <?= $this->render('_permissions', [

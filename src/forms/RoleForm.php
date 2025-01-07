@@ -116,6 +116,15 @@ class RoleForm extends ItemForm
         return $herited;
     }
 
+    public function beforeValidate(): bool
+    {
+        if (empty($this->childRoles)) {
+            // Make sure we have an array, not a string
+            $this->childRoles = [];
+        }
+        return parent::beforeValidate();
+    }
+
     /**
      * Main form process method
      *
