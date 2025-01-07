@@ -103,8 +103,11 @@ class PermissionForm extends ItemForm
             return false;
         }
 
-        if (!$item = $this->permission->getItem()) {
+        $item = $this->permission->getItem();
+        if ($item === null) {
             $item = Permission::create($this->name, $this->description);
+            // Then store it back into $this->permission
+            $this->permission->setItem($item);
         }
 
         $item->description = $this->description;

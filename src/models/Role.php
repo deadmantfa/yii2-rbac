@@ -13,9 +13,9 @@ use yii\rbac\Role as RbacRole;
 class Role extends Item
 {
     /**
-     * @var RbacRole Rbac item object.
+     * @var RbacRole|null Rbac item object.
      */
-    private $item;
+    private ?RbacRole $item = null;
 
     /**
      * Role constructor.
@@ -95,9 +95,9 @@ class Role extends Item
     }
 
     /**
-     * @return RbacRole
+     * @return RbacRole|null
      */
-    public function getItem(): RbacRole
+    public function getItem(): ?RbacRole
     {
         return $this->item;
     }
@@ -105,7 +105,7 @@ class Role extends Item
     /**
      * @param RbacRole|null $item
      */
-    public function setItem(RbacRole $item = null): void
+    public function setItem(?RbacRole $item): void
     {
         $this->item = $item;
     }

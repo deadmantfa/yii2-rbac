@@ -128,8 +128,12 @@ class RoleForm extends ItemForm
             return false;
         }
 
-        if (!$item = $this->role->getItem()) {
+        $item = $this->role->getItem();
+        if ($item === null) {
+            // Create a brand new RBAC Role object
             $item = Role::create($this->name, $this->description);
+            // IMPORTANT: set it back on the $this->role model
+            $this->role->setItem($item);
         }
 
         $item->description = $this->description;
