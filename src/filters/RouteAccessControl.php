@@ -15,23 +15,17 @@ class RouteAccessControl extends ActionFilter
 {
     /**
      * List of action that not need to check access.
-     *
-     * @var array
      */
     public array $allowActions = [];
 
     /**
      * Allow route pattern
      * in debug mode default value is "/^(site|gii|debug)\//i".
-     *
-     * @var string
      */
     public string $allowRegexp = '/^(site)\//i';
 
     /**
      * Creates controller/action permission automatically if they are missing in debug mode
-     *
-     * @var bool
      */
     public bool $autoCreatePermissions = true;
 

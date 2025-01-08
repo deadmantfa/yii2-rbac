@@ -19,9 +19,6 @@ class PermissionRelForm extends Model
 
     public $names;
 
-    /**
-     * @var Permission
-     */
     protected Permission $permission;
 
     /**
