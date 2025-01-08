@@ -37,7 +37,7 @@ class ScanHelper
         $controllerPaths = array_keys(iterator_to_array($allControllers));
 
         // Filter out ignored paths
-        if (!empty($ignorePaths)) {
+        if ($ignorePaths !== []) {
             $ignorePattern = '(' . implode('|', $ignorePaths) . ')';
             $ignoredControllers = new RegexIterator(
                 $allControllers,

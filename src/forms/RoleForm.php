@@ -97,7 +97,7 @@ class RoleForm extends ItemForm
     public function getInheritPermissions(): array
     {
         $herited = [];
-        if (!empty($this->childRoles)) {
+        if ($this->childRoles !== []) {
             foreach ($this->childRoles as $roleName) {
                 $permissions = Yii::$app->authManager->getPermissionsByRole($roleName);
                 $herited = array_merge(
@@ -114,7 +114,7 @@ class RoleForm extends ItemForm
 
     public function beforeValidate(): bool
     {
-        if (empty($this->childRoles)) {
+        if ($this->childRoles === []) {
             // Make sure we have an array, not a string
             $this->childRoles = [];
         }
@@ -197,7 +197,7 @@ class RoleForm extends ItemForm
      */
     public function getLinearTree(array $permissions, bool $missingParents = true): array
     {
-        if (empty($permissions)) {
+        if ($permissions === []) {
             return [];
         }
 

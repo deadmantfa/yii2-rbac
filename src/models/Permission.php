@@ -108,7 +108,7 @@ class Permission extends Item
      */
     public static function getParentChildMap(array $names = []): array
     {
-        if (empty($names)) {
+        if ($names === []) {
             $names = array_keys(Yii::$app->authManager->getPermissions());
         }
 

@@ -27,7 +27,7 @@ class Item
      */
     public static function addChilds(RbacItem $parent, array $childNames, int $type = RbacItem::TYPE_PERMISSION): bool
     {
-        if (empty($childNames)) return false;
+        if ($childNames === []) return false;
 
         $auth = Yii::$app->authManager;
 

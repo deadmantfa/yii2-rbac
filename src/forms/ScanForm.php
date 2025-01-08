@@ -120,7 +120,7 @@ class ScanForm extends Model
         $controllers = ScanHelper::scanControllers($this->path, $this->ignorePath);
         $actionRoutes = ScanHelper::scanControllerActionIds($controllers);
 
-        if (empty($actionRoutes)) {
+        if ($actionRoutes === []) {
             $this->addError('path', 'Unable to find controllers/actions.');
             return false;
         }

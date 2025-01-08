@@ -167,7 +167,7 @@ class RbacController extends Controller
      */
     public function actionAssign(array $items, array $userIds): int
     {
-        if (empty($items) || empty($userIds)) {
+        if ($items === [] || $userIds === []) {
             $this->log("Both items and user IDs are required.", Console::FG_RED);
             return ExitCode::DATAERR;
         }
