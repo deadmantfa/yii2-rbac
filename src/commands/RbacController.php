@@ -207,7 +207,7 @@ class RbacController extends Controller
         $actionRoutes = $scanner->scan();
         if ($actionRoutes) {
             $this->log("Found " . count($actionRoutes) . ' routes.', Console::FG_GREEN);
-            foreach ($scanner->importPermissions($actionRoutes) as $route => $status) {
+            foreach (array_keys($scanner->importPermissions($actionRoutes)) as $route) {
                 $this->log("Added route: $route", Console::FG_GREEN);
             }
         } else {
