@@ -24,7 +24,7 @@ class Role extends Item
      */
     public function __construct(RbacRole $item = null)
     {
-        if ($item !== null) {
+        if ($item instanceof \yii\rbac\Role) {
             $this->setItem($item);
         }
     }

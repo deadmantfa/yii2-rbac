@@ -103,7 +103,7 @@ class PermissionForm extends ItemForm
         }
 
         $item = $this->permission->getItem();
-        if ($item === null) {
+        if (!$item instanceof \yii\rbac\Permission) {
             $item = Permission::create($this->name, $this->description);
             // Then store it back into $this->permission
             $this->permission->setItem($item);
@@ -126,7 +126,7 @@ class PermissionForm extends ItemForm
     {
         unset($params, $validator);
         $name = $this->$attribute;
-        if ($item = Permission::find($name) !== null) {
+        if ($item = Permission::find($name) instanceof \deadmantfa\yii2\rbac\models\Permission) {
             $this->addError($attribute, 'Permission with the same name is already exists.');
             return false;
         }

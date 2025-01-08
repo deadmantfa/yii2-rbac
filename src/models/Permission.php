@@ -28,7 +28,7 @@ class Permission extends Item
 
     public function __construct(?RbacPermission $item = null)
     {
-        if ($item !== null) {
+        if ($item instanceof \yii\rbac\Permission) {
             $this->setItem($item);
         }
     }

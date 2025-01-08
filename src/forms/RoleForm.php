@@ -67,7 +67,7 @@ class RoleForm extends ItemForm
     {
         unset($params, $validator);
         $name = $this->$attribute;
-        if (Role::find($name) !== null) {
+        if (Role::find($name) instanceof \deadmantfa\yii2\rbac\models\Role) {
             $this->addError($attribute, 'Role with the same name is already exists.');
             return false;
         }
@@ -133,7 +133,7 @@ class RoleForm extends ItemForm
         }
 
         $item = $this->role->getItem();
-        if ($item === null) {
+        if (!$item instanceof \yii\rbac\Role) {
             // Create a brand new RBAC Role object
             $item = Role::create($this->name, $this->description);
             // IMPORTANT: set it back on the $this->role model

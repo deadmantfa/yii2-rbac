@@ -77,7 +77,7 @@ class PermissionsController extends Controller
      */
     public function actionUpdate(string $name): Response|array|string
     {
-        if ($perm = Permission::find($name) === null) {
+        if ($perm = !Permission::find($name) instanceof \deadmantfa\yii2\rbac\models\Permission) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -106,7 +106,7 @@ class PermissionsController extends Controller
      */
     public function actionDelete(string $name): Response
     {
-        if ($perm = Permission::find($name) === null) {
+        if ($perm = !Permission::find($name) instanceof \deadmantfa\yii2\rbac\models\Permission) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -125,7 +125,7 @@ class PermissionsController extends Controller
      */
     public function actionAddRelation(string $name): Response
     {
-        if ($perm = Permission::find($name) === null) {
+        if ($perm = !Permission::find($name) instanceof \deadmantfa\yii2\rbac\models\Permission) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -164,7 +164,7 @@ class PermissionsController extends Controller
      */
     public function actionRemoveRelation(string $name, string $item, string $scenario): Response
     {
-        if ($perm = Permission::find($name) === null) {
+        if ($perm = !Permission::find($name) instanceof \deadmantfa\yii2\rbac\models\Permission) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
