@@ -63,7 +63,7 @@ class RolesController extends Controller
      */
     public function actionUpdate(string $name): Response|array|string
     {
-        if (!$role = Role::find($name)) {
+        if ($role = Role::find($name) === null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -90,7 +90,7 @@ class RolesController extends Controller
      */
     public function actionDelete(string $name): Response
     {
-        if (!$role = Role::find($name)) {
+        if ($role = Role::find($name) === null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 

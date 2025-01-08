@@ -24,7 +24,7 @@ class Role extends Item
      */
     public function __construct(RbacRole $item = null)
     {
-        if ($item) {
+        if ($item !== null) {
             $this->setItem($item);
         }
     }

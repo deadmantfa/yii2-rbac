@@ -126,7 +126,7 @@ class PermissionForm extends ItemForm
     {
         unset($params, $validator);
         $name = $this->$attribute;
-        if ($item = Permission::find($name)) {
+        if ($item = Permission::find($name) !== null) {
             $this->addError($attribute, 'Permission with the same name is already exists.');
             return false;
         }

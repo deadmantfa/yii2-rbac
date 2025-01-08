@@ -67,7 +67,7 @@ class RoleForm extends ItemForm
     {
         unset($params, $validator);
         $name = $this->$attribute;
-        if (Role::find($name)) {
+        if (Role::find($name) !== null) {
             $this->addError($attribute, 'Role with the same name is already exists.');
             return false;
         }

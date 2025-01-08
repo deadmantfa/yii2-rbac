@@ -98,7 +98,7 @@ class RbacController extends Controller
 
         $permission = $auth->createPermission($name);
         $permission->description = $descr;
-        if ($rule) {
+        if ($rule !== null) {
             $permission->ruleName = $rule->name;
         }
         $auth->add($permission);
