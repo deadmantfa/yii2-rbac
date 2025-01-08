@@ -37,8 +37,6 @@ class RouteAccessControl extends ActionFilter
 
     /**
      * RouteAccessControl constructor.
-     *
-     * @param array $config
      */
     public function __construct(array $config = [])
     {
@@ -93,8 +91,6 @@ class RouteAccessControl extends ActionFilter
      * Auto Create Permissions
      * in debug mode create permissions automatically and assign them to master.
      *
-     * @param string $action_rule
-     * @param string $controller_rule
      * @throws Exception
      */
     protected function autoCreatePermissions(string $action_rule, string $controller_rule): void

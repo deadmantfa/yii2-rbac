@@ -20,10 +20,6 @@ class ScanHelper
 {
     /**
      * Recursively scans a directory to find controller files.
-     *
-     * @param string $directory
-     * @param array $ignorePaths
-     * @return array
      */
     public static function scanControllers(string $directory, array $ignorePaths = []): array
     {
@@ -60,8 +56,6 @@ class ScanHelper
     /**
      * Scans controller files to find their public action routes.
      *
-     * @param array $controllerFiles
-     * @return array
      * @throws ReflectionException
      */
     public static function scanControllerActionIds(array $controllerFiles): array
@@ -134,9 +128,6 @@ class ScanHelper
 
     /**
      * Extracts the namespace from a file's content.
-     *
-     * @param string $filePath
-     * @return string|null
      */
     private static function getNamespaceFromFile(string $filePath): ?string
     {
@@ -149,9 +140,6 @@ class ScanHelper
 
     /**
      * Extracts the class name from a file's content.
-     *
-     * @param string $filePath
-     * @return string|null
      */
     private static function getClassNameFromFile(string $filePath): ?string
     {
@@ -164,9 +152,6 @@ class ScanHelper
 
     /**
      * Extracts the module ID from a namespace.
-     *
-     * @param string $namespace
-     * @return string
      */
     private static function getModuleIdFromNamespace(string $namespace): string
     {
@@ -178,11 +163,6 @@ class ScanHelper
 
     /**
      * Retrieves public action routes from a reflected controller.
-     *
-     * @param ReflectionClass $reflection
-     * @param string $moduleId
-     * @param string $controllerId
-     * @return array
      */
     private static function getPublicActions(ReflectionClass $reflection, string $moduleId, string $controllerId): array
     {
@@ -205,11 +185,6 @@ class ScanHelper
 
     /**
      * Retrieves custom actions from the `actions()` method of a controller.
-     *
-     * @param ReflectionMethod $method
-     * @param string $controllerId
-     * @param string $moduleId
-     * @return array
      */
     private static function getCustomActions(ReflectionMethod $method, string $controllerId, string $moduleId): array
     {

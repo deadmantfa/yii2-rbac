@@ -18,9 +18,6 @@ abstract class ItemForm extends Model
     public ?int $createdAt = null;
     public ?int $updatedAt = null;
 
-    /**
-     * @return array
-     */
     public function rules(): array
     {
         return [
@@ -35,8 +32,6 @@ abstract class ItemForm extends Model
 
     /**
      * RBAC Item name validation pattern
-     *
-     * @return string
      */
     public static function getNamePattern(): string
     {
@@ -46,11 +41,6 @@ abstract class ItemForm extends Model
     /**
      * Validate item (permission/role) name to be unique
      *
-     * @param string $attribute
-     * @param array $params
-     * @param mixed $validator
-     *
-     * @return bool
      */
     abstract public function uniqueItemName(string $attribute, array $params, mixed $validator): bool;
 

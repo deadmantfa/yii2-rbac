@@ -38,7 +38,6 @@ class ScanForm extends Model
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function rules(): array
     {
@@ -83,7 +82,6 @@ class ScanForm extends Model
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function attributeLabels(): array
     {
@@ -96,7 +94,6 @@ class ScanForm extends Model
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function attributeHints(): array
     {

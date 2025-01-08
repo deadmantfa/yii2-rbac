@@ -36,7 +36,6 @@ class RolesController extends Controller
     /**
      * Create form/action
      *
-     * @return Response|string
      * @throws Exception
      */
     public function actionCreate(): Response|string
@@ -58,9 +57,7 @@ class RolesController extends Controller
     /**
      * Update form/action
      *
-     * @param string $name
      *
-     * @return array|string|Response
      * @throws NotFoundHttpException
      * @throws Exception
      */
@@ -88,9 +85,7 @@ class RolesController extends Controller
     /**
      * Delete action
      *
-     * @param string $name
      *
-     * @return Response
      * @throws NotFoundHttpException
      */
     public function actionDelete(string $name): Response

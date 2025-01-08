@@ -32,8 +32,6 @@ trait AutoMasterItemTrait
 
     /**
      * Find master permission object.
-     *
-     * @return null|\yii\rbac\Item
      */
     protected function getMasterPermission(): ?\yii\rbac\Item
     {

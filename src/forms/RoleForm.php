@@ -31,7 +31,6 @@ class RoleForm extends ItemForm
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function rules(): array
     {
@@ -42,7 +41,6 @@ class RoleForm extends ItemForm
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function attributeLabels(): array
     {
@@ -53,7 +51,6 @@ class RoleForm extends ItemForm
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function attributeHints(): array
     {
@@ -79,7 +76,6 @@ class RoleForm extends ItemForm
 
     /**
      * Setter for $role
-     * @param Role $role
      */
     public function setRole(Role $role): void
     {
@@ -128,7 +124,6 @@ class RoleForm extends ItemForm
     /**
      * Main form process method
      *
-     * @return bool
      * @throws Exception
      */
     public function save(): bool
@@ -199,8 +194,6 @@ class RoleForm extends ItemForm
      *
      * @param string[] $permissions
      * @param bool $missingParents Include parents, which are not present in the tree in "parent" attribute
-     *
-     * @return array
      */
     public function getLinearTree(array $permissions, bool $missingParents = true): array
     {
@@ -216,13 +209,7 @@ class RoleForm extends ItemForm
     /**
      * Recursive function to go over tree and sort/move items correctly.
      *
-     * @param array $array
-     * @param array $items
-     * @param array $children
      * @param null $parents
-     * @param int $depth
-     *
-     * @return array
      */
     protected function buildLinearTree(array $array, array &$items, array &$children, &$parents, int $depth = 0): array
     {

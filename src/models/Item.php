@@ -22,10 +22,7 @@ class Item
     const PERMISSION_MASTER = '*';
 
     /**
-     * @param RbacItem $parent
      * @param string[] $childNames
-     * @param int $type
-     * @return bool
      * @throws Exception
      */
     public static function addChilds(RbacItem $parent, array $childNames, int $type = RbacItem::TYPE_PERMISSION): bool

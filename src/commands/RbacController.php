@@ -51,7 +51,6 @@ class RbacController extends Controller
     /**
      * Initializes default roles, master, and administer permissions.
      *
-     * @return int
      * @throws Exception
      */
     public function actionInit(): int
@@ -89,11 +88,7 @@ class RbacController extends Controller
     /**
      * Adds a permission to the RBAC system.
      *
-     * @param string $name
-     * @param string $descr
      * @param Rule|null $rule
-     * @param array $parents
-     * @return Permission
      * @throws Exception
      * @throws \Exception
      */
@@ -120,10 +115,6 @@ class RbacController extends Controller
     /**
      * Adds a role to the RBAC system.
      *
-     * @param string $name
-     * @param string $descr
-     * @param array $childs
-     * @return Role
      * @throws Exception
      * @throws \Exception
      */
@@ -147,8 +138,6 @@ class RbacController extends Controller
     /**
      * Assigns the master role to a user.
      *
-     * @param int $userId
-     * @return int
      * @throws \Exception
      */
     public function actionAssignMaster(int $userId): int
@@ -174,9 +163,6 @@ class RbacController extends Controller
     /**
      * Assigns permissions or roles to users.
      *
-     * @param array $items
-     * @param array $userIds
-     * @return int
      * @throws \Exception
      */
     public function actionAssign(array $items, array $userIds): int
@@ -208,7 +194,6 @@ class RbacController extends Controller
     /**
      * Scans controller/module directories to get route permissions info.
      *
-     * @return int
      * @throws Exception
      */
     public function actionScan(): int

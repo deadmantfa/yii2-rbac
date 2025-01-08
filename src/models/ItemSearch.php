@@ -31,7 +31,6 @@ class ItemSearch extends Model
 
     /**
      * @param $permissionName
-     * @return array
      */
     public static function getRoleByPermission($permissionName): array
     {
@@ -53,8 +52,6 @@ class ItemSearch extends Model
 
     /**
      * @param $parent
-     *
-     * @return array
      */
     public static function getInherit($parent): array
     {
@@ -83,8 +80,6 @@ class ItemSearch extends Model
 
     /**
      * @param $params
-     *
-     * @return ArrayDataProvider
      */
     public function searchRoles($params): ArrayDataProvider
     {
@@ -107,8 +102,6 @@ class ItemSearch extends Model
 
     /**
      * @param $params
-     *
-     * @return ArrayDataProvider
      */
     public function searchPermissions($params): ArrayDataProvider
     {

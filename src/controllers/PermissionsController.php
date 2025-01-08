@@ -38,9 +38,6 @@ class PermissionsController extends Controller
         ];
     }
 
-    /**
-     * @return string
-     */
     public function actionIndex(): string
     {
         $searchModel = new ItemSearch();
@@ -56,7 +53,6 @@ class PermissionsController extends Controller
     }
 
     /**
-     * @return array|string|Response
      * @throws InvalidConfigException
      */
     public function actionCreate(): Response|array|string
@@ -76,9 +72,7 @@ class PermissionsController extends Controller
     }
 
     /**
-     * @param string $name
      *
-     * @return array|string|Response
      * @throws NotFoundHttpException|InvalidConfigException
      */
     public function actionUpdate(string $name): Response|array|string
@@ -107,9 +101,7 @@ class PermissionsController extends Controller
     /**
      * Delete a permission
      *
-     * @param string $name
      *
-     * @return Response
      * @throws NotFoundHttpException
      */
     public function actionDelete(string $name): Response
@@ -128,9 +120,7 @@ class PermissionsController extends Controller
     /**
      * Add relations to a permission
      *
-     * @param string $name
      *
-     * @return Response
      * @throws NotFoundHttpException
      */
     public function actionAddRelation(string $name): Response
@@ -169,11 +159,7 @@ class PermissionsController extends Controller
     /**
      * Remove relation from permission
      *
-     * @param string $name
-     * @param string $item
-     * @param string $scenario
      *
-     * @return Response
      * @throws NotFoundHttpException
      */
     public function actionRemoveRelation(string $name, string $item, string $scenario): Response
@@ -198,7 +184,6 @@ class PermissionsController extends Controller
     /**
      * Scan routes and create missing permissions
      *
-     * @return string|Response
      * @throws \yii\base\Exception
      */
     public function actionScan(): Response|string

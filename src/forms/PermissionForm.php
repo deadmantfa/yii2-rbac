@@ -27,7 +27,6 @@ class PermissionForm extends ItemForm
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function rules(): array
     {
@@ -137,11 +136,7 @@ class PermissionForm extends ItemForm
     /**
      * Validate Rule Class to be namespaced class name and instance of yii\rbac\Rule
      *
-     * @param string $attribute
      * @param array $params
-     * @param mixed $validator
-     *
-     * @return bool
      */
     public function validRuleClass(string $attribute, ?array $params, mixed $validator): bool
     {

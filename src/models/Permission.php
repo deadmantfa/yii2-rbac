@@ -55,10 +55,7 @@ class Permission extends Item
      * Find route wildcard permission (controller/*).
      * Creates if not exists
      *
-     * @param string $baseName
-     * @param string $descrPrefix
      *
-     * @return RbacPermission|null
      * @throws Exception
      */
     public static function getWildcard(string $baseName, string $descrPrefix = 'Access '): ?RbacPermission
@@ -108,9 +105,6 @@ class Permission extends Item
     /**
      * Build map of parents and childs
      *
-     * @param array $names
-     *
-     * @return array
      */
     public static function getParentChildMap(array $names = []): array
     {

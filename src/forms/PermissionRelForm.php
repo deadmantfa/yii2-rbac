@@ -26,7 +26,6 @@ class PermissionRelForm extends Model
 
     /**
      * @inheritdoc
-     * @return array
      */
     public function rules(): array
     {
@@ -45,8 +44,6 @@ class PermissionRelForm extends Model
 
     /**
      * List of available scenarios
-     *
-     * @return array
      */
     public static function getScenarios(): array
     {
@@ -59,8 +56,6 @@ class PermissionRelForm extends Model
 
     /**
      * Setter for $permission
-     *
-     * @param Permission $permission
      */
     public function setPermission(Permission $permission): void
     {
@@ -70,7 +65,6 @@ class PermissionRelForm extends Model
     /**
      * ADD form process method
      *
-     * @return bool|int
      * @throws Exception
      */
     public function addRelations(): bool|int
@@ -94,9 +88,6 @@ class PermissionRelForm extends Model
     /**
      * Helper to define correct parent and child
      *
-     * @param string $itemName
-     *
-     * @return array
      */
     public function getParentChild(string $itemName): array
     {
@@ -113,9 +104,6 @@ class PermissionRelForm extends Model
     /**
      * REMOVE form process method
      *
-     * @param string $itemName
-     *
-     * @return bool
      */
     public function removeRelation(string $itemName): bool
     {
@@ -142,9 +130,6 @@ class PermissionRelForm extends Model
 
     /**
      * Recursively fetch all descendants of an item.
-     *
-     * @param Item $item
-     * @return array
      */
     private function getAllDescendants(Item $item): array
     {

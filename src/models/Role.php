@@ -32,9 +32,6 @@ class Role extends Item
     /**
      * Alias for authManager getPermission
      *
-     * @param string $name
-     *
-     * @return null|Role
      */
     public static function find(string $name): ?Role
     {
@@ -46,8 +43,6 @@ class Role extends Item
 
     /**
      * Return key-value pairs of all roles names
-     *
-     * @return array
      */
     public static function getList(): array
     {
@@ -59,10 +54,7 @@ class Role extends Item
     /**
      * Create role inside application authManager
      *
-     * @param string $name
-     * @param string $descr
      *
-     * @return RbacRole
      * @throws Exception
      */
     public static function create(string $name, string $descr): RbacRole
@@ -94,17 +86,11 @@ class Role extends Item
         return $results;
     }
 
-    /**
-     * @return RbacRole|null
-     */
     public function getItem(): ?RbacRole
     {
         return $this->item;
     }
 
-    /**
-     * @param RbacRole|null $item
-     */
     public function setItem(?RbacRole $item): void
     {
         $this->item = $item;
