@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Role',
                                 'format' => 'raw',
                                 'filter' => Html::activeTextInput($searchModel, 'roleName', ['class' => 'form-control']),
-                                'value' => function ($data) {
+                                'value' => function ($data): string {
                                     return Html::a($data->name, ['roles/update', 'name' => $data->name])
                                         . '<br>' . Html::encode($data->description);
                                 },
@@ -46,13 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Permissions',
                                 'headerOptions' => ['class' => 'col-md-2'],
                                 'contentOptions' => ['class' => 'text-center'],
-                                'value' => function ($data) {
+                                'value' => function ($data): int {
                                     return count(Yii::$app->authManager->getPermissionsByRole($data->name));
                                 },
                             ],
                             [
                                 'header' => 'Inherit',
-                                'value' => function ($data) {
+                                'value' => function ($data): string {
                                     return implode(', ', ItemSearch::getInherit($data->name));
                                 },
                             ]
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'filter' => Html::activeDropDownList($searchModel, 'permRole', Role::getList(),
                                     ['class' => 'form-control', 'prompt' => 'Any']
                                 ),
-                                'value' => function ($data) {
+                                'value' => function ($data): string {
                                     return implode(', ', ItemSearch::getRoleByPermission($data->name));
                                 }
                             ]

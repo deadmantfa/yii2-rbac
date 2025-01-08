@@ -52,7 +52,7 @@ class ScanForm extends Model
                 return Yii::getAlias($value);
             }],
             [['ignorePath'], 'default', 'value' => []],
-            [['ignorePath'], 'filter', 'filter' => function ($value) {
+            [['ignorePath'], 'filter', 'filter' => function ($value): array {
                 if (!is_array($value)) {
                     $value = explode(',', trim($value));
                 }
