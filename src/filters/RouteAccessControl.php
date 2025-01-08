@@ -54,7 +54,7 @@ class RouteAccessControl extends ActionFilter
     public function beforeAction($action): bool
     {
         // check for error action, otherwise and prevent throwing new exception.
-        if (is_a($action, ErrorAction::class)) {
+        if ($action instanceof \yii\web\ErrorAction) {
             return true;
         }
 
