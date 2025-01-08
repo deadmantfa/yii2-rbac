@@ -208,8 +208,6 @@ class RoleForm extends ItemForm
 
     /**
      * Recursive function to go over tree and sort/move items correctly.
-     *
-     * @param null $parents
      */
     protected function buildLinearTree(array $array, array &$items, array &$children, &$parents, int $depth = 0): array
     {
