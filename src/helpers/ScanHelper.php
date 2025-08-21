@@ -112,7 +112,7 @@ class ScanHelper
                         foreach ($customActions as $actionId => $params) {
                             $actions[] = $moduleId . $controllerId . '/' . $actionId;
                         }
-                    } catch (Exception $e) {
+                    } catch (Exception) {
                         Yii::warning("RBAC Scanner: can't scan custom actions from {$method->class}::actions(). You will need to add them manually.");
                     }
 

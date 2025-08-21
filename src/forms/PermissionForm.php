@@ -65,7 +65,7 @@ class PermissionForm extends ItemForm
     {
         if ($this->ruleName) {
             $rule = Yii::$app->authManager->getRule($this->ruleName);
-            return get_class($rule);
+            return $rule::class;
         }
         return null;
     }
@@ -79,7 +79,7 @@ class PermissionForm extends ItemForm
     {
         $rules = Yii::$app->authManager->getRules();
         foreach ($rules as $rule) {
-            if (get_class($rule) === $className) {
+            if ($rule::class === $className) {
                 return $rule;
             }
         }

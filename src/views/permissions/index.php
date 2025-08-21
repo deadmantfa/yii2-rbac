@@ -37,24 +37,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Role',
                                 'format' => 'raw',
                                 'filter' => Html::activeTextInput($searchModel, 'roleName', ['class' => 'form-control']),
-                                'value' => function ($data): string {
-                                    return Html::a($data->name, ['roles/update', 'name' => $data->name])
-                                        . '<br>' . Html::encode($data->description);
-                                },
+                                'value' => fn($data): string => Html::a($data->name, ['roles/update', 'name' => $data->name])
+                                    . '<br>' . Html::encode($data->description),
                             ],
                             [
                                 'header' => 'Permissions',
                                 'headerOptions' => ['class' => 'col-md-2'],
                                 'contentOptions' => ['class' => 'text-center'],
-                                'value' => function ($data): int {
-                                    return count(Yii::$app->authManager->getPermissionsByRole($data->name));
-                                },
+                                'value' => fn($data): int => count(Yii::$app->authManager->getPermissionsByRole($data->name)),
                             ],
                             [
                                 'header' => 'Inherit',
-                                'value' => function ($data): string {
-                                    return implode(', ', ItemSearch::getInherit($data->name));
-                                },
+                                'value' => fn($data): string => implode(', ', ItemSearch::getInherit($data->name)),
                             ]
                         ],
                     ]); ?>
@@ -81,9 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Permission',
                                 'format' => 'html',
                                 'filter' => Html::activeTextInput($searchModel, 'permName', ['class' => 'form-control']),
-                                'value' => function ($data) {
-                                    return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
-                                }
+                                'value' => fn($data) => Html::a($data->name, ['permissions/update', 'name' => $data->name])
                             ],
                             [
                                 'attribute' => 'description',
@@ -95,9 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'filter' => Html::activeDropDownList($searchModel, 'permRole', Role::getList(),
                                     ['class' => 'form-control', 'prompt' => 'Any']
                                 ),
-                                'value' => function ($data): string {
-                                    return implode(', ', ItemSearch::getRoleByPermission($data->name));
-                                }
+                                'value' => fn($data): string => implode(', ', ItemSearch::getRoleByPermission($data->name))
                             ]
                         ],
                     ]); ?>

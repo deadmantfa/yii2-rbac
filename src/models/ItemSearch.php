@@ -87,9 +87,7 @@ class ItemSearch extends Model
 
         $roles = Yii::$app->authManager->getRoles();
         if ($this->roleName) {
-            $roles = array_filter($roles, function (RbacRole $role): bool {
-                return str_contains(strtolower($role->name), $this->roleName);
-            });
+            $roles = array_filter($roles, fn(RbacRole $role): bool => str_contains(strtolower($role->name), $this->roleName));
         }
 
         return new ArrayDataProvider([
@@ -111,9 +109,7 @@ class ItemSearch extends Model
             Yii::$app->authManager->getPermissions();
 
         if ($this->permName) {
-            $permissions = array_filter($permissions, function (RbacPermission $permission): bool {
-                return str_contains(strtolower($permission->name), $this->permName);
-            });
+            $permissions = array_filter($permissions, fn(RbacPermission $permission): bool => str_contains(strtolower($permission->name), $this->permName));
         }
 
         return new ArrayDataProvider([

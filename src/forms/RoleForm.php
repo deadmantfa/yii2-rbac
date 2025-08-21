@@ -163,7 +163,7 @@ class RoleForm extends ItemForm
     public function getCleanAllowPermissions(): array
     {
         $allowPermissions = array_diff($this->allowPermissions, $this->inheritPermissions);
-        list($parents, $children) = Permission::getParentChildMap($allowPermissions);
+        [$parents, $children] = Permission::getParentChildMap($allowPermissions);
         unset($children);
         $cleanPermissions = array_combine($allowPermissions, $allowPermissions);
         foreach ($parents as $child => $childParents) {
@@ -201,7 +201,7 @@ class RoleForm extends ItemForm
             return [];
         }
 
-        list($parents, $children) = Permission::getParentChildMap($missingParents ? [] : $permissions);
+        [$parents, $children] = Permission::getParentChildMap($missingParents ? [] : $permissions);
 
         return $this->buildLinearTree($permissions, $permissions, $children, $parents);
     }

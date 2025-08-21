@@ -72,7 +72,7 @@ class PermissionRelForm extends Model
 
         $added = 0;
         foreach ($this->names as $name) {
-            list($parent, $child) = $this->getParentChild($name);
+            [$parent, $child] = $this->getParentChild($name);
 
             if ($parent && $child && !Yii::$app->authManager->hasChild($parent, $child)) {
                 Yii::$app->authManager->addChild($parent, $child);
@@ -104,7 +104,7 @@ class PermissionRelForm extends Model
      */
     public function removeRelation(string $itemName): bool
     {
-        list($parent, $child) = $this->getParentChild($itemName);
+        [$parent, $child] = $this->getParentChild($itemName);
         if (!$parent || !$child || !Yii::$app->authManager->hasChild($parent, $child)) {
             return false;
         }

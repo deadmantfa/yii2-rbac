@@ -48,9 +48,7 @@ class ScanForm extends Model
             [['path'], 'default', 'value' => '@app', 'on' => static::SCENARIO_WEB],
             [['routesBase'], 'default', 'value' => ''],
 
-            [['path'], 'filter', 'filter' => function ($value) {
-                return Yii::getAlias($value);
-            }],
+            [['path'], 'filter', 'filter' => fn($value) => Yii::getAlias($value)],
             [['ignorePath'], 'default', 'value' => []],
             [['ignorePath'], 'filter', 'filter' => function ($value): array {
                 if (!is_array($value)) {
