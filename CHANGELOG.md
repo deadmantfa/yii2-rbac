@@ -1,6 +1,11 @@
 CHANGELOG
 =====================
 
+v2.0.7
+---------------------
+
+- Refactor: Improve PHP 8.2+ compatibility and code quality (06deb9d)
+
 v2.0.0
 ---------------------
 
