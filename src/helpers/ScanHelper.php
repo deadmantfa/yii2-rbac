@@ -69,15 +69,15 @@ class ScanHelper
                 $content
             );
             // ignore abstract classes
-            if (str_contains($content, 'abstract class')) {
+            if (str_contains((string) $content, 'abstract class')) {
                 continue;
             }
 
-            if (!preg_match('/namespace\s+([a-z0-9_\\\\]+)/i', $content, $namespaceMatch)) {
+            if (!preg_match('/namespace\s+([a-z0-9_\\\\]+)/i', (string) $content, $namespaceMatch)) {
                 continue;
             }
 
-            if (!preg_match('/class\s+(([a-z0-9_]+)Controller)[^{]+{/i', $content, $classMatch)) {
+            if (!preg_match('/class\s+(([a-z0-9_]+)Controller)[^{]+{/i', (string) $content, $classMatch)) {
                 continue;
             }
 

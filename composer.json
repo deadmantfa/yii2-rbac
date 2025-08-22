@@ -22,7 +22,7 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=8.2.0",
-    "yiisoft/yii2": "^2.0.51",
+    "yiisoft/yii2": "^2.0.52",
     "kartik-v/yii2-widget-select2": "^2.2.0",
     "yiisoft/yii2-bootstrap4": "^2.0"
   },
